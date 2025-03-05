@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengolah Data Penjualan</title>
+  <link rel="stylesheet" href="../css/styles4.css">
+</head>
+<body>
+  <h1>Pengolah Data Penjualan</h1>
+  
+  <div class="upload-section">
+    <label for="protectedFile">Upload Menu Yang Tidak Boleh Diubah:</label>
+    <input type="file" id="protectedFile" accept=".xlsx">
+  </div>
+
+  <div class="upload-section">
+    <label for="salesFile">Upload File Penjualan:</label>
+    <input type="file" id="salesFile" accept=".xlsx">
+  </div>
+
+  <button onclick="processFiles()">Proses Data</button>
+
+  <!-- Load library XLSX dari CDN -->
+  <script src="../libs/4.js"></script>
+  <!-- Pastikan script.js dimuat setelah XLSX -->
+  <script src="../javascript/script4.js" defer></script>
+</body>
+</html>

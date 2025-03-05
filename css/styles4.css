@@ -1,0 +1,112 @@
+/* Gaya Umum */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #333;
+}
+
+h1 {
+    font-size: 2em;
+    color: #34495e;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Kontainer Upload Section */
+.upload-section {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.upload-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+input[type="file"] {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+input[type="file"]:focus {
+    border-color: #2980b9;
+    background-color: #f0f8ff;
+    outline: none;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: #3b5998;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #4a90e2;
+}
+
+/* Tombol Proses */
+button {
+    background: linear-gradient(135deg, #4a90e2, #3b5998);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 28px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: buttonBounce 1s infinite alternate;
+    margin-top: 20px;
+}
+
+@keyframes buttonBounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+}
+
+button:hover {
+    background: linear-gradient(135deg, #3b5998, #4a90e2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsif */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6em;
+    }
+    .upload-section {
+        padding: 15px;
+    }
+    button {
+        width: 100%;
+    }
+}
