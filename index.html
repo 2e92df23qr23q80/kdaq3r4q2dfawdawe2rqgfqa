@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - Grup Excel Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 900px;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #2b68a7;
+            animation: slideDown 1s ease-in-out;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 2rem 0;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+        }
+        
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2b68a7;
+            background: #f0f4f8;
+            border-radius: 10px;
+            padding: 10px;
+            min-width: 80px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+        
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+            color: #666;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 2rem auto;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2b68a7, #4caf50);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+            animation: progressAnimation 8s ease-in-out infinite;
+        }
+        
+        .excel-graphic {
+            margin: 2rem auto;
+            position: relative;
+            width: 240px;
+            height: 180px;
+            perspective: 1000px;
+        }
+        
+        .excel-sheet {
+            position: absolute;
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(45deg, #ffffff, #f0f0f0);
+            border: 2px solid #cccccc;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            animation: sheetFloat 4s ease-in-out infinite;
+        }
+        
+        .excel-sheet:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 19%, #e0e0e0 20%, #e0e0e0 21%, transparent 22%,
+                                      transparent 39%, #e0e0e0 40%, #e0e0e0 41%, transparent 42%,
+                                      transparent 59%, #e0e0e0 60%, #e0e0e0 61%, transparent 62%,
+                                      transparent 79%, #e0e0e0 80%, #e0e0e0 81%, transparent 82%),
+                          linear-gradient(0deg, transparent 19%, #e0e0e0 20%, #e0e0e0 21%, transparent 22%,
+                                      transparent 39%, #e0e0e0 40%, #e0e0e0 41%, transparent 42%,
+                                      transparent 59%, #e0e0e0 60%, #e0e0e0 61%, transparent 62%,
+                                      transparent 79%, #e0e0e0 80%, #e0e0e0 81%, transparent 82%);
+            opacity: 0.6;
+            border-radius: 3px;
+        }
+        
+        .excel-sheet:nth-child(1) {
+            transform: translateZ(0) translateY(0);
+            border-color: #1e7145;
+            z-index: 3;
+        }
+        
+        .excel-sheet:nth-child(2) {
+            transform: translateZ(-5px) translateY(5px);
+            border-color: #2b68a7;
+            z-index: 2;
+        }
+        
+        .excel-sheet:nth-child(3) {
+            transform: translateZ(-10px) translateY(10px);
+            border-color: #d83b01;
+            z-index: 1;
+        }
+        
+        .accurate-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #2b68a7;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            animation: rotateLogo 4s linear infinite;
+        }
+        
+        .data-stream {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .data-bit {
+            position: absolute;
+            display: block;
+            color: #2b68a7;
+            font-family: monospace;
+            font-size: 12px;
+            opacity: 0;
+            animation: dataBitFall linear forwards;
+        }
+        
+        .subscribe-btn {
+            background: #2b68a7;
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(43, 104, 167, 0.3);
+            animation: buttonPulse 3s infinite;
+        }
+        
+        .subscribe-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(43, 104, 167, 0.4);
+            background: #1c4978;
+        }
+        
+        .icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 2rem;
+        }
+        
+        .feature-icon {
+            font-size: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: iconPop 0.5s ease-in-out both;
+        }
+        
+        .feature-icon:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .feature-icon:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .feature-label {
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            color: #666;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes progressAnimation {
+            0% {
+                width: 0%;
+            }
+            50% {
+                width: 75%;
+            }
+            100% {
+                width: 95%;
+            }
+        }
+        
+        @keyframes sheetFloat {
+            0%, 100% {
+                transform: translateZ(0) translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateZ(0) translateY(-10px) rotate(1deg);
+            }
+        }
+        
+        @keyframes rotateLogo {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes dataBitFall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px));
+                opacity: 0;
+            }
+        }
+        
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 0 4px 8px rgba(43, 104, 167, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 15px rgba(43, 104, 167, 0.6);
+            }
+        }
+        
+        @keyframes iconPop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            80% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .countdown {
+                gap: 10px;
+            }
+            
+            .countdown-number {
+                font-size: 1.8rem;
+                min-width: 60px;
+            }
+            
+            .countdown-item {
+                min-width: 60px;
+            }
+            
+            .excel-graphic {
+                width: 200px;
+                height: 150px;
+            }
+            
+            .excel-sheet {
+                width: 160px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="data-stream" id="data-stream"></div>
+    
+    <div class="container">
+        <h1>Grup Excel Generator</h1>
+        
+        <div class="excel-graphic">
+            <div class="excel-sheet"></div>
+            <div class="excel-sheet"></div>
+            <div class="excel-sheet"></div>
+            <div class="accurate-logo">A</div>
+        </div>
+        
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div class="icons">
+            <div class="feature-icon">
+                📊
+                <span class="feature-label">Excel Format</span>
+            </div>
+			<div class="feature-icon">
+                🔄
+                <span class="feature-label">Auto Convert</span>
+            </div>
+            <div class="feature-icon">
+                💾
+                <span class="feature-label">Import</span>
+            </div>
+        </div>
+        
+        <button class="subscribe-btn" onclick="showNotification()">NOTIFY ME</button>
+    </div>
+    
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            // Set the launch date (14 days from now)
+            const launchDate = new Date();
+            launchDate.setDate(launchDate.getDate() + 14);
+            
+            function update() {
+                // Get current date and time
+                const now = new Date().getTime();
+                
+                // Find the distance between now and the countdown date
+                const distance = launchDate - now;
+                
+                // Time calculations
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Display the result
+                document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+                document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+                document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+            }
+            
+            // Update the count down every 1 second
+            update();
+            setInterval(update, 1000);
+        }
+        
+        // Create data stream animation
+        function createDataStream() {
+            const container = document.getElementById('data-stream');
+            const symbols = [
+                '1', '0', 'A1', 'B2', 'C3', '=SUM()', '=VLOOKUP()', 
+                '$', '€', '¥', '#', '%', '+', '-', '*', '/'
+            ];
+            
+            function createDataBit() {
+                const dataBit = document.createElement('div');
+                dataBit.classList.add('data-bit');
+                
+                // Random position and symbol
+                const left = Math.random() * 100;
+                const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+                const duration = 5 + Math.random() * 10;
+                
+                // Set content and styles
+                dataBit.textContent = symbol;
+                dataBit.style.left = `${left}%`;
+                dataBit.style.animationDuration = `${duration}s`;
+                dataBit.style.opacity = '0';
+                
+                container.appendChild(dataBit);
+                
+                // Remove element after animation
+                setTimeout(() => {
+                    dataBit.remove();
+                }, duration * 1000);
+            }
+            
+            // Create initial bits
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createDataBit();
+                }, i * 300);
+            }
+            
+            // Continue creating bits
+            setInterval(() => {
+                createDataBit();
+            }, 800);
+        }
+        
+        // Notification function
+        function showNotification() {
+            alert("Thanks! We'll notify you when the Grup Excel Generator is launched.");
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCountdown();
+            createDataStream();
+            
+            // Add slight delay for the excel sheets animation
+            document.querySelectorAll('.excel-sheet').forEach((sheet, index) => {
+                sheet.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+    </script>
+</body>
+</html>
